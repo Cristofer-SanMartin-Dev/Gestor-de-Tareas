@@ -1,0 +1,209 @@
+Prompt Actualizado: Plataforma de Gestión de Tareas y Productividad (Web, Móvil y Monetización)
+Aquí está el prompt completo y refinado con todos tus requerimientos, incluyendo la aplicación móvil y la documentación.
+
+Prompt: Plataforma Integral de Gestión de Tareas y Productividad (Web, Móvil y Monetización)
+Genera un plan de proyecto para una Plataforma Integral de Gestión de Tareas y Productividad, diseñada con una arquitectura de microservicios, con un claro objetivo de monetización a través de la oferta de servicios premium y futuras expansiones. La plataforma debe ser robusta, escalable y ofrecer una experiencia de usuario atractiva y segura en múltiples plataformas (Web y Móvil), acompañada de una documentación exhaustiva para facilitar su construcción y evolución.
+
+1. Visión y Objetivo de Monetización:
+Propósito: Ofrecer una herramienta poderosa para la organización personal y profesional, ayudando a los usuarios a ser más productivos.
+
+Monetización: La plataforma debe incluir elementos de "propaganda" o promoción sutil/explícita de sus beneficios, con la intención de expandir funcionalidades en el futuro (ej., gestión financiera) que podrían ofrecerse como características premium o parte de un modelo de suscripción. La pantalla de inicio (web y móvil) debe comunicar este valor.
+
+2. Arquitectura y Herramientas a Utilizar:
+Lenguaje de Programación Backend: Java
+
+Framework Backend: Spring Boot (última versión estable)
+
+Base de Datos: MySQL (una base de datos separada para cada microservicio, ej. task_db, category_db, tag_db, auth_db, financial_db)
+
+Herramienta de Construcción: Apache Maven
+
+Mapeo ORM: Spring Data JPA / Hibernate
+
+Servicios REST: Spring Web (RESTful APIs)
+
+Seguridad y Autenticación: Spring Security, JSON Web Tokens (JWT)
+
+API Gateway / Service Discovery: Spring Cloud Gateway y Eureka Server (como parte de Spring Cloud)
+
+Configuración Centralizada: Spring Cloud Config Server
+
+Logging: SLF4J con Logback
+
+Manejo de Excepciones: Global Exception Handling (Spring @ControllerAdvice) para respuestas de error consistentes.
+
+Herramienta de Desarrollo (IDE): IntelliJ IDEA / VS Code con extensiones de Java
+
+Control de Versiones: Git y GitHub
+
+Contenedorización (Recomendado): Docker y Docker Compose para facilitar el desarrollo, despliegue y orquestación de microservicios.
+
+Frontend Web:
+
+Tecnologías: HTML, CSS (con un framework como Tailwind CSS o Bootstrap para estilo), JavaScript (Vainilla JS o un framework ligero como Vue.js/React para mayor interactividad).
+
+Mensajes de UI: SweetAlert2 (librería JavaScript para alertas y confirmaciones bonitas).
+
+Servidor Web: Live Server (para desarrollo).
+
+Aplicación Móvil:
+
+Tecnología: React Native (para iOS y Android).
+
+Adaptabilidad: Diseño responsivo para funcionar en cualquier tamaño y orientación de dispositivo móvil.
+
+Autenticación: Integración con el Auth Service basado en JWT.
+
+Documentación:
+
+Herramientas: OpenAPI/Swagger (para documentación de API del backend), Markdown (para documentación de arquitectura, usuario, desarrollo, etc.).
+
+3. Requerimientos Funcionales por Microservicio:
+3.1. Microservicio de Autenticación (Auth Service) - Puerto 8083
+Registro de Usuarios: Permitir a nuevos usuarios registrarse con un nombre de usuario (único) y contraseña. Validación de formato y fortaleza de contraseña. Almacenamiento seguro de contraseñas (hashing).
+
+Login de Usuarios: Permitir a los usuarios iniciar sesión con su nombre de usuario y contraseña. Generación y emisión de un JSON Web Token (JWT) al inicio de sesión exitoso. El JWT debe contener información básica del usuario (ej. ID de usuario) y expirar después de un tiempo.
+
+Validación de JWT: Proporcionar un endpoint para que otros microservicios puedan validar la autenticidad y validez de un JWT.
+
+Gestión de Usuarios (Básica): Posibilidad de obtener detalles básicos del usuario (ej. por ID).
+
+Base de Datos: auth_db
+
+3.2. Microservicio de Tareas (Task Service) - Puerto 8080
+Autenticación y Autorización: Todas las operaciones CRUD de tareas deben requerir un JWT válido. El servicio debe verificar el JWT y asegurar que el usuario autenticado solo pueda acceder a sus propias tareas.
+
+CRUD Completo de Tareas: Crear, ver (lista y por ID), actualizar y eliminar tareas. La tarea se asocia automáticamente al ID del usuario que la crea.
+
+Filtrado de Tareas: Permitir filtrar tareas del usuario autenticado por título (búsqueda parcial), estado, categoría y/o etiquetas.
+
+Validación de Datos: Asegurar que los datos de entrada para las tareas sean válidos (ej. título no nulo, IDs de categoría/etiquetas válidos antes de asociarlos).
+
+Comunicación con otros servicios: Debe consultar al Category Service y Tag Service para validar la existencia de IDs de categoría y etiquetas durante la creación y actualización de tareas.
+
+3.3. Microservicio de Categorías (Category Service) - Puerto 8081
+Autenticación y Autorización: Todas las operaciones CRUD de categorías deben requerir un JWT válido. El servicio debe verificar el JWT y asegurar que el usuario autenticado solo pueda acceder a sus propias categorías.
+
+CRUD Completo de Categorías: Crear, ver (lista y por ID), actualizar y eliminar categorías. La categoría se asocia al ID del usuario que la crea.
+
+Validación: Asegurar que el nombre de la categoría sea único por usuario y no nulo.
+
+Consideración para eliminación: Si una categoría tiene tareas asociadas, la eliminación debería ser bloqueada o manejada con una estrategia específica.
+
+3.4. Microservicio de Etiquetas (Tag Service) - Puerto 8082
+Autenticación y Autorización: Todas las operaciones CRUD de etiquetas deben requerir un JWT válido. El servicio debe verificar el JWT y asegurar que el usuario autenticado solo pueda acceder a sus propias etiquetas.
+
+CRUD Completo de Etiquetas: Crear, ver (lista y por ID), actualizar y eliminar etiquetas. La etiqueta se asocia al ID del usuario que la crea.
+
+Validación: Asegurar que el nombre de la etiqueta sea único por usuario y no nulo.
+
+Consideración para eliminación: Si una etiqueta está asociada a tareas, la eliminación debería ser bloqueada o manejada con una estrategia específica.
+
+3.5. Microservicio de Gestión Financiera (Financial Service) - Puerto 8084 (Futura Funcionalidad / Premium)
+CRUD de Transacciones: Registrar ingresos y gastos (fecha, monto, descripción, categoría financiera).
+
+Categorías Financieras: Gestión de categorías para transacciones (ej. "Salario", "Alquiler", "Comida").
+
+Reportes Básicos: Visualización de balances, gastos por categoría.
+
+Autenticación y Autorización: Requerirá JWT y acceso solo a datos del usuario.
+
+Consideración Premium: Esta funcionalidad podría ser un "gancho" para un nivel de suscripción premium.
+
+3.6. Frontend Web (Aplicación Web)
+Página de Inicio (Home Screen):
+
+Información atractiva sobre la aplicación, sus beneficios y cómo puede mejorar la productividad.
+
+Mensajes de "propaganda" sutiles y claros sobre el valor de la app.
+
+Un llamado a la acción claro para "Registrarse" o "Iniciar Sesión".
+
+Posiblemente, una sección que insinúe futuras funcionalidades (ej. "¡Próximamente: Gestión Financiera!" o "Actualiza a Premium para más").
+
+Consejos de productividad o uso de la app.
+
+Formulario de Registro: Campos para nombre de usuario y contraseña. Validación en tiempo real y mensajes de error claros.
+
+Formulario de Login: Campos para nombre de usuario y contraseña. Manejo de errores de credenciales inválidas.
+
+Dashboard/Gestor de Tareas (Post-Login): Interfaz de usuario responsiva. Formulario de Tareas, Listado de Tareas (solo las del usuario autenticado), Funcionalidad de Edición y Eliminación.
+
+Gestión de Categorías y Etiquetas (Post-Login): Interfaces separadas o modales para que el usuario pueda gestionar sus propias categorías y etiquetas.
+
+Área de Mensajes: Utilizar SweetAlert2 para mostrar mensajes de éxito, error o advertencia al usuario (ej. "Registro exitoso", "Credenciales inválidas", "Tarea creada con éxito").
+
+Manejo de Sesiones: Almacenar el JWT de forma segura (ej. en localStorage o sessionStorage) y enviarlo en cada solicitud a los microservicios autenticados.
+
+Redirección: Redirigir a los usuarios no autenticados a la página de inicio/login.
+
+Funcionalidad de Filtrado: Campos de entrada para filtrar por título, estado, categoría y etiquetas. Botones "Aplicar Filtros" y "Limpiar Filtros".
+
+3.7. Aplicación Móvil (React Native)
+Página de Inicio (Home Screen): Similar a la web, con información promocional y llamados a la acción para registro/login.
+
+Formulario de Registro y Login: Interfaces de usuario adaptadas a móvil, consumo de Auth Service.
+
+Dashboard/Gestor de Tareas (Post-Login):
+
+Replicar la funcionalidad principal de gestión de tareas (CRUD, filtros) adaptada a la experiencia móvil.
+
+Consumo de Task Service, Category Service, Tag Service con JWT.
+
+Gestión de Categorías y Etiquetas: Interfaces móviles para gestionar estas entidades.
+
+Navegación: Navegación intuitiva entre las diferentes secciones de la aplicación.
+
+Mensajes de UI: Utilizar un sistema de notificaciones/alertas nativo o librería similar a SweetAlert2 para React Native.
+
+Persistencia de Sesión: Manejo del JWT para mantener la sesión del usuario.
+
+4. Requerimientos No Funcionales:
+Seguridad:
+
+Autenticación JWT: Implementación completa de JWT para la autenticación de usuarios y la comunicación segura entre el frontend (web y móvil) y los microservicios.
+
+Autorización basada en roles (futuro): El diseño debe permitir la futura adición de roles de usuario (ej. "Premium") para controlar el acceso a funcionalidades.
+
+Protección de Contraseñas: Almacenamiento de contraseñas con hashing (ej. BCrypt).
+
+Protección CORS: Configuración adecuada en todos los microservicios.
+
+Protección CSRF/XSS: Consideraciones básicas en el frontend.
+
+Rendimiento: Las operaciones deben ser rápidas y eficientes en todas las plataformas.
+
+Escalabilidad: La arquitectura de microservicios debe permitir escalar cada servicio de forma independiente.
+
+Disponibilidad: Los servicios deben estar diseñados para ser tolerantes a fallos básicos.
+
+Mantenibilidad: Código limpio, modular, bien documentado y con pruebas unitarias/de integración. Uso de principios SOLID.
+
+Observabilidad: Logging estructurado y claro en todos los servicios.
+
+Usabilidad: La interfaz de usuario debe ser intuitiva y fácil de usar en todas las plataformas, con un flujo de usuario claro.
+
+Consistencia de Datos: Asegurar la coherencia de los IDs externos (categoryId, tagIds, userId) mediante validaciones y lógica de negocio.
+
+Adaptabilidad Móvil: La aplicación móvil debe adaptarse a diferentes tamaños de pantalla, resoluciones y orientaciones de dispositivos iOS y Android.
+
+5. Documentación del Proyecto:
+Documentación de Arquitectura: Diagramas de alto nivel (C4 Model, diagramas de flujo de datos) mostrando la interacción de microservicios, API Gateway, Eureka, etc.
+
+Documentación de API: Utilizar OpenAPI/Swagger para generar documentación interactiva de todos los endpoints de los microservicios (Auth, Task, Category, Tag, Financial).
+
+Documentación de Base de Datos: Esquemas de base de datos para cada microservicio.
+
+Documentación de Desarrollo:
+
+Guía de configuración del entorno de desarrollo.
+
+Instrucciones para levantar todos los microservicios (con y sin Docker Compose).
+
+Guías de contribución (ej. estándares de código, proceso de pull request).
+
+Explicación de la estructura del código y los patrones de diseño utilizados.
+
+Documentación de Usuario: Guía de inicio rápido y manual de usuario para la plataforma web y móvil.
+
+Facilidad de Construcción y Mantenimiento: La documentación debe ser clara, concisa, estar versionada y ser fácilmente accesible para cualquier persona que necesite entender, construir o mantener el sistema.

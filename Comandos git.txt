@@ -5,10 +5,10 @@ git clone https://github.com/Cristofer2024/Ingeneria-Software
 git pull
 
 //Crear rama nueva
-git checkout -b nombre_rama
+git checkout -b secundaria
 
 //Cambiar de rama desde comando
-git checkout nombre_rama
+git checkout main/secundaria
 
 //Subimos nuestros cambios (preparación, confirmación y actualización de rama remota)
 git add .
@@ -16,7 +16,7 @@ git commit -m "descripción"
 git push origin nombre-rama
 
 // Validación y Fusión de Cambios en la Rama Principal
-git checkout main --> cambio de rama a la principal
+git checkout main --> cambio a la rama principal
 git merge nombre_rama --> actualiza la rama principal con los cambios de la rama secundaria.
 git push --> sube los cambios al repositorio remoto
 
@@ -25,3 +25,4 @@ git push --set-upstream origin rama_secundaria
 
 // para saber en que rama estoy
 git branch --show-current
+
